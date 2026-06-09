@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据汇总 · CPS</title>
+  <link rel="stylesheet" href="sumpage.css">
+</head>
+<body>
+  <div class="card">
+    <!-- 标题栏 -->
+    <div class="header">
+      <a class="back-btn" href="../mainpage/mainpage.html" title="返回CPS">←</a>
+      <span class="title">数据汇总</span>
+    </div>
+
+    <!-- 周期切换：日 / 周 / 月 / 年 -->
+    <div class="period-tabs" id="periodTabs">
+      <button class="period-tab active" data-period="day">日</button>
+      <button class="period-tab" data-period="week">周</button>
+      <button class="period-tab" data-period="month">月</button>
+      <button class="period-tab" data-period="year">年</button>
+    </div>
+
+    <!-- 周期导航：左右切换 -->
+    <div class="period-nav">
+      <button class="period-arrow" id="periodPrev" title="上一个">◀</button>
+      <span class="period-label" id="periodLabel">2026年6月7日</span>
+      <button class="period-arrow" id="periodNext" title="下一个">▶</button>
+    </div>
+
+    <!-- 分隔线 -->
+    <div class="divider"></div>
+
+    <!-- 视图切换行 -->
+    <div class="view-tabs" id="viewTabs">
+      <button class="period-tab" data-view="history" id="historyViewTab" style="display:none">历史记录</button>
+      <button class="period-tab active" data-view="summary" id="summaryViewTab">今日汇总</button>
+      <button class="period-tab" data-view="tag">任务汇总</button>
+      <button class="period-tab" data-view="active" id="activeViewTab" style="display:none">活跃日段</button>
+      <button class="period-tab" data-view="chart" id="chartViewTab">活跃时段</button>
+    </div>
+
+    <!-- 今日汇总 -->
+    <div class="section view-section" id="viewSummary">
+      <div class="summary-cards">
+        <div class="summary-card card-time">
+          <span class="summary-icon">⏱</span>
+          <span class="summary-card-value" id="summaryTotalTime">0h</span>
+          <span class="summary-card-label" id="summaryTimeLabel">今日专注总时长</span>
+        </div>
+        <div class="summary-card card-count">
+          <span class="summary-icon">🏷</span>
+          <span class="summary-card-value" id="summaryTagCount">0</span>
+          <span class="summary-card-label" id="summaryCountLabel">今日任务数</span>
+        </div>
+        <div class="summary-card card-toptag">
+          <span class="summary-icon">🏆</span>
+          <span class="summary-card-value tag-name" id="summaryTopTag">-</span>
+          <span class="summary-card-label" id="summaryTopTagLabel">最长任务</span>
+        </div>
+        <div class="summary-card card-compare" id="summaryCompareCard">
+          <span class="summary-icon" id="summaryCompareIcon">📊</span>
+          <span class="summary-card-value" id="summaryCompare">-</span>
+          <span class="summary-card-label" id="summaryCompareLabel">较昨日</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 标签汇总 -->
+    <div class="section view-section" id="viewTag" style="display:none">
+      <div class="tag-summary" id="tagSummary">
+        <div class="chart-loading">暂无数据</div>
+      </div>
+    </div>
+
+    <!-- 活跃日段/月段 -->
+    <div class="section view-section" id="viewActive" style="display:none">
+      <div class="hourly-chart" id="activeChart">
+        <div class="chart-loading">暂无数据</div>
+      </div>
+    </div>
+
+    <!-- 时段分布柱状图 -->
+    <div class="section view-section" id="viewChart" style="display:none">
+      <div class="hourly-chart" id="hourlyChart">
+        <div class="chart-loading">暂无数据</div>
+      </div>
+    </div>
+
+    <!-- 历史记录 -->
+    <div class="section view-section" id="viewHistory" style="display:none">
+      <div class="history-list" id="historyList">
+        <div class="chart-loading">暂无数据</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 自定义弹窗 -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-card">
+      <div class="modal-icon" id="modalIcon"></div>
+      <div class="modal-message" id="modalMessage"></div>
+      <div class="modal-buttons" id="modalButtons"></div>
+    </div>
+  </div>
+
+  <script src="sumpage.js"></script>
+</body>
+</html>

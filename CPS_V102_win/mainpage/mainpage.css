@@ -1,0 +1,529 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ========== 根元素 — 确保无背景露出 ========== */
+html {
+  background: transparent;
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+/* ========== 背景层 ========== */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: safe center;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  user-select: none;
+  overflow: hidden;
+  border-radius: 28px;
+  -webkit-app-region: drag;
+}
+
+
+/* ========== 毛玻璃卡片 ========== */
+.card {
+  background: rgba(232, 250, 240, 0.96);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-radius: 28px;
+  padding: 24px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  border: 1px solid rgba(188, 199, 192, 0.5);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 24px 64px rgba(34, 197, 94, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  -webkit-app-region: drag;
+  position: relative;
+  z-index: 1;
+}
+
+/* ========== 时钟容器 ========== */
+.clock-container {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  max-width: 100%;
+  max-height: 60vh;
+  flex-shrink: 1;
+}
+
+.clock-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* SVG 环公共样式 */
+.ring-progress {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.ring-divider {
+  fill: none;
+  stroke: #a3b1a9;
+}
+
+/* 时钟中心文字（HTML 叠加） */
+.clock-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 66%;
+  height: 66%;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto;
+  overflow: hidden;
+  -webkit-app-region: no-drag;
+  cursor: default;
+}
+.time {
+  font-size: 42px;
+  font-weight: 350;
+  color: #0f172a;
+  letter-spacing: 0.03em;
+  font-variant-numeric: tabular-nums;
+  font-family: 'SF Mono', 'Cascadia Code', 'Consolas', 'PingFang SC', monospace;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.time-label {
+  font-size: 13px;
+  color: #7d8e84;
+  letter-spacing: 0.2em;
+}
+
+/* ========== 标签选择 ========== */
+.tag-area {
+  display: flex;
+  align-items: center;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 22px;
+  font-size: 14px;
+  color: #64748b;
+  background: #ffffff;
+  border: 1px solid #bcc7c0;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  letter-spacing: 0.06em;
+}
+
+.tag:hover {
+  border-color: #22c55e;
+  color: #16a34a;
+  background: #f0fdf4;
+}
+
+/* ========== 按钮区域 ========== */
+.controls {
+  display: flex;
+  gap: 14px;
+}
+
+.btn {
+  padding: 14px 48px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  outline: none;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+/* 开始 — 绿色 */
+.btn-start {
+  background: #22c55e;
+  color: #ffffff;
+  box-shadow: 0 2px 12px rgba(34, 197, 94, 0.25);
+}
+
+.btn-start:hover {
+  background: #16a34a;
+  box-shadow: 0 4px 22px rgba(34, 197, 94, 0.38);
+  transform: translateY(-2px);
+}
+
+.btn-start:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 8px rgba(34, 197, 94, 0.22);
+}
+
+/* 结束 — 琥珀色 */
+.btn-end {
+  background: #f59e0b;
+  color: #ffffff;
+  box-shadow: 0 2px 12px rgba(245, 158, 11, 0.25);
+}
+
+.btn-end:hover {
+  background: #d97706;
+  box-shadow: 0 4px 22px rgba(245, 158, 11, 0.38);
+  transform: translateY(-2px);
+}
+
+.btn-end:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 8px rgba(245, 158, 11, 0.22);
+}
+
+/* 重置 — 白色 */
+.btn-reset {
+  background: #ffffff;
+  color: #64748b;
+  border: 1px solid #bcc7c0;
+}
+
+.btn-reset:hover {
+  color: #334155;
+  border-color: #a3b1a9;
+  background: #ecf1ee;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.btn-reset:active {
+  transform: translateY(0);
+  background: #e3e9e6;
+}
+
+/* ========== 底部提示 ========== */
+.hint {
+  color: #6e8c7a;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+
+/* ========== 底部行：提示 + 悬浮按钮 ========== */
+.bottom-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.float-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #22c55e;
+  color: #ffffff;
+  font-size: 17px;
+  text-decoration: none;
+  border: 1px solid #16a34a;
+  transition: all 0.25s ease;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.float-btn:hover {
+  background: #16a34a;
+  border-color: #15803d;
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.28);
+  transform: translateY(-2px) scale(1.08);
+}
+
+.float-btn:active {
+  transform: translateY(0) scale(0.95);
+  box-shadow: 0 1px 4px rgba(34, 197, 94, 0.12);
+}
+
+/* ========== 最小化按钮 ========== */
+.minimize-btn {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid #a3b1a9;
+  background: #ecf1ee;
+  color: #64748b;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  transition: all 0.22s ease;
+  z-index: 10;
+  -webkit-app-region: no-drag;
+  font-family: inherit;
+  padding: 0;
+  letter-spacing: 0;
+}
+
+.minimize-btn:hover {
+  background: #22c55e;
+  border-color: #16a34a;
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(34, 197, 94, 0.30);
+}
+
+.minimize-btn:active {
+  background: #16a34a;
+  transform: scale(0.93);
+  box-shadow: 0 1px 4px rgba(34, 197, 94, 0.20);
+}
+
+/* ========== 拖拽区域 ========== */
+/* 背景和卡片可拖拽，交互元素排除 */
+.btn,
+.tag,
+.float-btn,
+.minimize-btn,
+.modal-overlay,
+input {
+  -webkit-app-region: no-drag;
+}
+
+/* ========== 自定义弹窗 ========== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  -webkit-app-region: no-drag;
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 36px 44px 28px;
+  max-width: 380px;
+  width: 88%;
+  text-align: center;
+  border: 1px solid #bcc7c0;
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.16),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  animation: modalEnter 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform-origin: center center;
+}
+
+.modal-icon {
+  font-size: 42px;
+  margin-bottom: 14px;
+  line-height: 1;
+  animation: modalIconPop 0.35s cubic-bezier(0.22, 0.61, 0.36, 1) 0.05s both;
+}
+
+.modal-message {
+  font-size: 15px;
+  color: #334155;
+  line-height: 1.7;
+  margin-bottom: 28px;
+  letter-spacing: 0.03em;
+  white-space: pre-line;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.modal-btn {
+  padding: 11px 36px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all 0.18s ease;
+  font-family: inherit;
+  letter-spacing: 0.05em;
+}
+
+.modal-btn-primary {
+  background: #22c55e;
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(34, 197, 94, 0.25);
+}
+
+.modal-btn-primary:hover {
+  background: #16a34a;
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.35);
+  transform: translateY(-1px);
+}
+
+.modal-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 6px rgba(34, 197, 94, 0.20);
+}
+
+.modal-btn-secondary {
+  background: #ffffff;
+  color: #475569;
+  border: 1px solid #b6c2bb;
+}
+
+.modal-btn-secondary:hover {
+  background: #ecf1ee;
+  border-color: #a3b1a9;
+  color: #334155;
+}
+
+.modal-btn-secondary:active {
+  background: #e3e9e6;
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.88) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes modalIconPop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========== 迷你模式（120×60 仅显示时间） ========== */
+
+@property --rainbow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes miniRainbow {
+  from { --rainbow-angle: 0deg; }
+  to   { --rainbow-angle: 360deg; }
+}
+html.mini-mode {
+  width: 100vw;
+  height: 100vh;
+  border-radius: 52px;
+  overflow: hidden;
+}
+
+body.mini-mode {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 52px;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  -webkit-app-region: no-drag;
+}
+
+body.mini-mode .card {
+  position: relative;
+  border: 6px solid transparent;
+  border-radius: 52px;
+  background:
+    linear-gradient(rgba(15, 23, 42, 0.78), rgba(15, 23, 42, 0.78)) padding-box,
+    conic-gradient(from var(--rainbow-angle),
+      #ff6b6b, #ffa94d, #ffd43b, #69db7c,
+      #4dabf7, #da77f2, #ff6b6b
+    ) border-box;
+  animation: miniRainbow 3s linear infinite;
+  box-shadow: none;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+}
+
+
+body.mini-mode .clock-container {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+}
+
+body.mini-mode .clock-svg {
+  display: none;
+}
+
+body.mini-mode .clock-inner {
+  position: static;
+  transform: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background: transparent;
+  pointer-events: auto;
+}
+
+body.mini-mode .time {
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 350;
+}
+
+body.mini-mode .time-label {
+  display: none;
+}
+
+body.mini-mode .tag-area,
+body.mini-mode .controls,
+body.mini-mode .bottom-row,
+body.mini-mode .minimize-btn {
+  display: none !important;
+}
