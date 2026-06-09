@@ -1,0 +1,60 @@
+{
+  "name": "e_clock",
+  "version": "1.0.1",
+  "description": "CPS - Pomodoro Timer Electron App",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "build": {
+    "appId": "com.cps.pomodoro",
+    "productName": "CPS",
+    "directories": {
+      "output": "CPS_S"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "mainpage/**/*",
+      "hotmappage/**/*",
+      "sumpage/**/*",
+      "assets/**/*"
+    ],
+    "asar": true,
+    "compression": "normal",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/timeclock_256.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/timeclock.ico",
+      "uninstallerIcon": "assets/timeclock.ico",
+      "installerHeaderIcon": "assets/timeclock.ico",
+
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "guid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "runAfterFinish": true,
+      "include": "installer.nsh"
+    }
+  },
+  "devDependencies": {
+    "electron": "^42.3.3",
+    "electron-builder": "^26.15.2"
+  }
+}

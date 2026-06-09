@@ -1,0 +1,401 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ========== 根元素 — 确保无背景露出 ========== */
+html {
+  background: transparent;
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: safe center;
+  height: 100vh;
+  padding: 0;
+  background: transparent;
+  font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  user-select: none;
+  overflow: hidden;
+  border-radius: 28px;
+}
+
+/* ========== 毛玻璃卡片层 ========== */
+.card {
+  background: rgba(232, 250, 240, 0.96);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-radius: 28px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 24px 64px rgba(34, 197, 94, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(188, 199, 192, 0.5);
+  width: 100%;
+  height: 100%;
+  -webkit-app-region: drag;
+  overflow: hidden;
+}
+
+/* ========== 标题栏 ========== */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.back-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #dde5e7;
+  color: #64748b;
+  text-decoration: none;
+  font-size: 20px;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.back-btn:hover {
+  background: #dae2dd;
+  color: #334155;
+  transform: translateX(-2px);
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 500;
+  color: #0f172a;
+  letter-spacing: 0.08em;
+}
+
+/* ========== 年份切换 ========== */
+.year-switcher {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.year-arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #bcc7c0;
+  background: transparent;
+  color: #64748b;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+.year-arrow:hover {
+  background: #dde5e7;
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.year-arrow:active {
+  background: #e8f5e9;
+  transform: scale(0.95);
+}
+
+.year-arrow.disabled {
+  opacity: 0.25;
+  cursor: default;
+  pointer-events: none;
+}
+
+.year-label {
+  font-size: 24px;
+  font-weight: 500;
+  color: #0f172a;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* ========== 热力图容器 ========== */
+.heatmap-container {
+  --cell-size: 13px;
+  --cell-gap: 3px;
+  --label-width: 28px;
+  --month-font: 11px;
+  --weekday-font: 10px;
+
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  overflow-x: clip;
+  overflow-y: visible;
+  padding: 3px;
+}
+
+/* 月份标签行 */
+.heatmap-month-row {
+  display: flex;
+  margin-bottom: 2px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.heatmap-month-label {
+  position: absolute;
+  font-size: var(--month-font);
+  color: #7d8e84;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+/* 网格主体：星期标签 + 周列 */
+.heatmap-body {
+  display: flex;
+  gap: var(--cell-gap);
+}
+
+.heatmap-weekday-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cell-gap);
+  flex-shrink: 0;
+}
+
+.heatmap-weekday-label {
+  width: var(--label-width);
+  height: var(--cell-size);
+  font-size: var(--weekday-font);
+  color: #7d8e84;
+  line-height: var(--cell-size);
+  text-align: right;
+  padding-right: 3px;
+}
+
+.heatmap-week {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cell-gap);
+  flex-shrink: 0;
+}
+
+.heatmap-day {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border-radius: max(1px, calc(var(--cell-size) * 0.15));
+  transition: outline 0.1s ease;
+  outline: 1px solid rgba(27, 31, 35, 0.12);
+}
+
+.heatmap-day:hover {
+  outline: max(1px, calc(var(--cell-size) * 0.18)) solid rgba(27, 31, 35, 0.3);
+  z-index: 1;
+}
+
+/* 五档颜色 */
+.heatmap-day.level-0 { background: #fafcfb; }
+.heatmap-day.level-1 { background: #9be9a8; }
+.heatmap-day.level-2 { background: #40c463; }
+.heatmap-day.level-3 { background: #30a14e; }
+.heatmap-day.level-4 { background: #216e39; }
+
+/* 今日高亮 */
+.heatmap-day.today {
+  outline: max(1px, calc(var(--cell-size) * 0.18)) solid #0f172a;
+  outline-offset: 0;
+  z-index: 2;
+}
+
+/* ========== 悬浮提示 ========== */
+.heatmap-tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: #0f172a;
+  color: #f1f5f9;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  z-index: 200;
+  white-space: nowrap;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  text-align: center;
+}
+
+.heatmap-tooltip.visible {
+  opacity: 1;
+}
+
+/* ========== 图例 ========== */
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.legend-label {
+  font-size: 12px;
+  color: #7d8e84;
+  letter-spacing: 0.06em;
+}
+
+.legend-cell {
+  width: var(--cell-size, 13px);
+  height: var(--cell-size, 13px);
+  border-radius: max(1px, calc(var(--cell-size, 13px) * 0.15));
+}
+
+.legend-cell.level-0 { background: #fafcfb; }
+.legend-cell.level-1 { background: #9be9a8; }
+.legend-cell.level-2 { background: #40c463; }
+.legend-cell.level-3 { background: #30a14e; }
+.legend-cell.level-4 { background: #216e39; }
+
+/* ========== 分隔线 ========== */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: #cdd5d0;
+  flex-shrink: 0;
+}
+
+/* ========== 排行榜容器 ========== */
+.rankings {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  flex-shrink: 1;
+  min-height: 0;
+}
+
+.rank-section {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+/* 榜间分隔线 */
+.rank-section + .rank-section::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 18px;
+  bottom: 0;
+  width: 1px;
+  background: #cdd5d0;
+}
+
+.rank-section-title {
+  font-size: 12px;
+  color: #7d8e84;
+  letter-spacing: 0.06em;
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.rank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.rank-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 20px;
+}
+
+.rank-num {
+  width: 18px;
+  font-size: 11px;
+  color: #64748b;
+  text-align: right;
+  flex-shrink: 0;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+}
+
+.rank-num.top3 {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.rank-name {
+  width: 60px;
+  font-size: 11px;
+  color: #7d8e84;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rank-bar-track {
+  flex: 1;
+  height: 9px;
+  background: #dde5e7;
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 20px;
+}
+
+.rank-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+/* 月份排行：蜜橙 */
+#rankMonth .rank-bar-fill { background: #ff984d; }
+
+/* 周活跃：天蓝 */
+#rankWeek .rank-bar-fill { background: #4dc8e8; }
+
+/* 日活跃：薄荷 */
+#rankDay .rank-bar-fill { background: #4eda8a; }
+
+.rank-value {
+  width: 44px;
+  font-size: 11px;
+  color: #7d8e84;
+  text-align: right;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+}
+
+/* ========== 拖拽区域 ========== */
+/* 卡片可拖拽，交互元素排除 */
+.back-btn,
+.year-arrow,
+.heatmap-day {
+  -webkit-app-region: no-drag;
+}
