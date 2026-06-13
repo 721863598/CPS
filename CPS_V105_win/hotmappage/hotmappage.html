@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>热力图 · CPS</title>
+  <link rel="stylesheet" href="hotmappage.css">
+</head>
+<body>
+  <div class="card">
+    <!-- 标题栏 -->
+    <div class="header">
+      <a class="back-btn" href="../mainpage/mainpage.html" title="返回CPS">←</a>
+      <span class="title">计时热力图</span>
+    </div>
+
+    <!-- 年份切换 -->
+    <div class="year-switcher">
+      <button class="year-arrow" id="yearPrev" title="上一年">◀</button>
+      <span class="year-label" id="yearLabel">2026</span>
+      <button class="year-arrow" id="yearNext" title="下一年">▶</button>
+    </div>
+
+    <!-- 热力图容器 -->
+    <div class="heatmap-container" id="heatmapContainer"></div>
+
+    <!-- 图例 -->
+    <div class="legend">
+      <span class="legend-label">少</span>
+      <span class="legend-cell level-0"></span>
+      <span class="legend-cell level-1"></span>
+      <span class="legend-cell level-2"></span>
+      <span class="legend-cell level-3"></span>
+      <span class="legend-cell level-4"></span>
+      <span class="legend-label">多</span>
+    </div>
+
+    <!-- 分隔线 -->
+    <div class="divider"></div>
+
+    <!-- 排行榜 -->
+    <div class="rankings" id="rankings">
+      <!-- 月份排行 -->
+      <div class="rank-section">
+        <div class="rank-section-title">月份排行</div>
+        <div class="rank-list" id="rankMonth"></div>
+      </div>
+      <!-- 周活跃前十二 -->
+      <div class="rank-section">
+        <div class="rank-section-title">周活跃 Top 12</div>
+        <div class="rank-list" id="rankWeek"></div>
+      </div>
+      <!-- 日活跃前十二 -->
+      <div class="rank-section">
+        <div class="rank-section-title">日活跃 Top 12</div>
+        <div class="rank-list" id="rankDay"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="hotmappage.js"></script>
+</body>
+</html>

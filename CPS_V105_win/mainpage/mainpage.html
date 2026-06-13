@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CPS</title>
+  <link rel="stylesheet" href="mainpage.css">
+</head>
+<body>
+  <div class="card">
+    <!-- 三圈时钟 -->
+    <div class="clock-container">
+
+      <svg class="clock-svg" viewBox="0 0 400 400">
+        <defs>
+          <!-- 中心圆盘渐变：白 → 浅薄荷绿，与卡片背景融合 -->
+          <radialGradient id="centerGrad" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#dcf5e6" />
+          </radialGradient>
+
+          <!-- 24h 环：24 个刻度，每刻度 15° -->
+          <circle id="tick24" cx="200" cy="200" r="185"
+            fill="none" stroke="#9ba9a1" stroke-width="6"
+            stroke-dasharray="3 45.43"
+            transform="rotate(-90 200 200)" />
+
+          <!-- 1h 环：60 个刻度，每刻度 6° -->
+          <circle id="tick60-outer" cx="200" cy="200" r="165"
+            fill="none" stroke="#9ba9a1" stroke-width="6"
+            stroke-dasharray="2 15.28"
+            transform="rotate(-90 200 200)" />
+
+          <!-- 1min 环：60 个刻度，每刻度 6° -->
+          <circle id="tick60-inner" cx="200" cy="200" r="145"
+            fill="none" stroke="#9ba9a1" stroke-width="6"
+            stroke-dasharray="2 13.18"
+            transform="rotate(-90 200 200)" />
+        </defs>
+
+        <!-- ===== 24h 外环 ===== -->
+        <use href="#tick24" />
+        <circle cx="200" cy="200" r="185"
+          class="ring-progress"
+          stroke="#86dbaa" stroke-width="6"
+          stroke-dasharray="0 1162.39"
+          transform="rotate(-90 200 200)"
+          id="progress24h" />
+
+        <!-- 分隔线 1 -->
+        <circle cx="200" cy="200" r="176"
+          class="ring-divider" stroke-width="1" />
+
+        <!-- ===== 1h 中环 ===== -->
+        <use href="#tick60-outer" />
+        <circle cx="200" cy="200" r="165"
+          class="ring-progress"
+          stroke="#4ade80" stroke-width="6"
+          stroke-dasharray="0 1036.73"
+          transform="rotate(-90 200 200)"
+          id="progress1h" />
+
+        <!-- 分隔线 2 -->
+        <circle cx="200" cy="200" r="156"
+          class="ring-divider" stroke-width="1" />
+
+        <!-- ===== 1min 内环 ===== -->
+        <use href="#tick60-inner" />
+        <circle cx="200" cy="200" r="145"
+          class="ring-progress"
+          stroke="#22c55e" stroke-width="6"
+          stroke-dasharray="0 911.06"
+          transform="rotate(-90 200 200)"
+          id="progress1m" />
+
+        <!-- 中心圆盘 -->
+        <circle cx="200" cy="200" r="135"
+          fill="url(#centerGrad)"
+          stroke="#bcc7c0" stroke-width="0.5" />
+      </svg>
+
+      <!-- 数字时间（HTML 叠加） -->
+      <div class="clock-inner">
+        <span class="time">00:00:00</span>
+        <span class="time-label"></span>
+      </div>
+    </div>
+
+    <!-- 最小化按钮 -->
+    <button class="minimize-btn" title="最小化到托盘">—</button>
+
+    <!-- 标签选择 -->
+    <div class="tag-area">
+      <span class="tag">
+        <span class="tag-text">输入标签</span>
+      </span>
+    </div>
+
+    <!-- 按钮 -->
+    <div class="controls">
+      <button class="btn btn-start">开 始</button>
+      <button class="btn btn-end">结 束</button>
+      <button class="btn btn-reset">重 置</button>
+    </div>
+
+    <div class="bottom-row">
+      <a class="float-btn" href="../sumpage/sumpage.html" title="查看数据汇总">📋</a>
+      <span class="hint">专注每一刻 · stay focused · 内测V1.0.5</span>
+      <a class="float-btn" href="../hotmappage/hotmappage.html" title="查看热力图">🔥</a>
+    </div>
+  </div>
+
+  <!-- 标签选择器浮层 -->
+  <div class="tp-overlay" id="tpOverlay">
+    <div class="tp-card">
+      <div class="tp-input-row">
+        <input class="tp-input" id="tpInput" type="text" placeholder="输入标签名称..." maxlength="20" autocomplete="off">
+        <button class="tp-input-clear" id="tpInputClear" title="清除">×</button>
+        <button class="tp-input-confirm" id="tpInputConfirm" title="确认">✓</button>
+      </div>
+      <div class="tp-section" id="tpRecentSection">
+        <div class="tp-section-title">最近使用</div>
+        <div class="tp-recent" id="tpRecent"></div>
+      </div>
+      <div class="tp-columns">
+        <div class="tp-col">
+          <div class="tp-section-title">全部任务</div>
+          <div class="tp-list" id="tpAll"></div>
+        </div>
+        <div class="tp-col">
+          <div class="tp-section-title">热门任务</div>
+          <div class="tp-list" id="tpHot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 自定义弹窗 -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-card">
+      <div class="modal-icon" id="modalIcon"></div>
+      <div class="modal-message" id="modalMessage"></div>
+      <div class="modal-buttons" id="modalButtons"></div>
+    </div>
+  </div>
+
+  <script src="mainpage.js"></script>
+</body>
+</html>
